@@ -26,6 +26,14 @@ func RunActivator(ctx context.Context) {
 		glog.Fatalf("Error retrieving activator configuration: %s", err)
 	}
 
+	activatorCfg, err := deployments.GetConfigFromEnvironment()
+	if err != nil {
+		glog.Fatalf(
+			"Error retrieving endpoints controller configuration: %s",
+			err,
+		)
+	}
+
 	// Run the activator
-	deployments.NewActivator(client).Run(ctx)
+	deployments.NewActivator(activatorCfg, client).Run(ctx)
 }

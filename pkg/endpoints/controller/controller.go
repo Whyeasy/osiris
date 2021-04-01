@@ -53,7 +53,7 @@ func NewController(
 		kubeClient: kubeClient,
 		activatorPodsInformer: k8s.PodsIndexInformer(
 			kubeClient,
-			config.OsirisNamespace,
+			metav1.NamespaceAll,
 			nil,
 			activatorPodsSelector,
 		),
@@ -207,9 +207,10 @@ func (c *controller) syncActivatorPod(obj interface{}) {
 		}
 	}
 	glog.Infof(
-		"Informed about activator pod %s; its IP is %s and its ready "+
+		"Informed about pod %s in namespace %s; its IP is %s and its ready "+
 			"condition is %t",
 		pod.Name,
+		pod.Namespace,
 		pod.Status.PodIP,
 		ready,
 	)

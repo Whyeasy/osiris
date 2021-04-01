@@ -8,7 +8,6 @@ import (
 
 	"github.com/golang/glog"
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/cache"
 
@@ -33,20 +32,21 @@ type activator struct {
 	srv                *http.Server
 }
 
-func NewActivator(kubeClient kubernetes.Interface) Activator {
+func NewActivator(config Config,
+	kubeClient kubernetes.Interface) Activator {
 	const port = 5000
 	mux := http.NewServeMux()
 	a := &activator{
 		kubeClient: kubeClient,
 		servicesInformer: k8s.ServicesIndexInformer(
 			kubeClient,
-			metav1.NamespaceAll,
+			config.ActivatorNamespace,
 			nil,
 			nil,
 		),
 		nodeInformer: k8s.NodesIndexInformer(
 			kubeClient,
-			metav1.NamespaceAll,
+			config.ActivatorNamespace,
 			nil,
 			nil,
 		),
