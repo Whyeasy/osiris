@@ -14,6 +14,7 @@ rules:
   - nodes
   - pods
   - services
+  - namespaces
   verbs:
   - get
   - list

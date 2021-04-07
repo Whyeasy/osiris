@@ -12,6 +12,7 @@ const (
 	enableScalingAnnotationName        = "osiris.dm.gg/enableScaling"
 	collectMetricsAnnotationName       = "osiris.dm.gg/collectMetrics"
 	manageEndpointsAnnotationName      = "osiris.dm.gg/manageEndpoints"
+	namespaceActivatorAnnotationName   = "osiris.dm.gg/enableActivator"
 )
 
 // WorkloadIsEligibleForAutoScaling checks the annotations to see if the
@@ -30,6 +31,10 @@ func PodIsEligibleForProxyInjection(annotations map[string]string) bool {
 // service is eligible for management of its endpoints by osiris or not.
 func ServiceIsEligibleForEndpointsManagement(annotations map[string]string) bool {
 	return annotationBooleanValue(annotations, manageEndpointsAnnotationName)
+}
+
+func NamespaceIsEligibleForActivatorDeployment(annotations map[string]string) bool {
+	return annotationBooleanValue(annotations, namespaceActivatorAnnotationName)
 }
 
 func annotationBooleanValue(annotations map[string]string, key string) bool {

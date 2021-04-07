@@ -29,6 +29,8 @@ func main() {
 	switch strings.ToLower(flag.Arg(0)) {
 	case "activator":
 		cmd.RunActivator(ctx)
+	case "activator-starter":
+		cmd.RunActivatorStarter(ctx)
 	case "endpoints-controller":
 		cmd.RunEndpointsController(ctx)
 	case "endpoints-hijacker":

@@ -9,7 +9,7 @@ image:
   ## Image pull policy
   pullPolicy:
 
-activator:
+activatorStarter:
   replicaCount: 1
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious

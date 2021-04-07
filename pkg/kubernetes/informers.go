@@ -217,3 +217,23 @@ func NodesIndexInformer(
 		cache.Indexers{},
 	)
 }
+
+func NamespaceIndexInformer(
+	client kubernetes.Interface,
+	namespace string,
+) cache.SharedIndexInformer {
+	namespaceClient := client.CoreV1().Namespaces()
+	return cache.NewSharedIndexInformer(
+		&cache.ListWatch{
+			ListFunc: func(options metav1.ListOptions) (runtime.Object, error) {
+				return namespaceClient.List(context.TODO(), options)
+			},
+			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
+				return namespaceClient.Watch(context.TODO(), options)
+			},
+		},
+		&corev1.Namespace{},
+		0,
+		cache.Indexers{},
+	)
+}

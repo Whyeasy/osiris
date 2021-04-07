@@ -1,0 +1,19 @@
+{{- $ca := genCA "osiris-activator-starter-ca" 3650 }}
+{{- $cn := printf "%s-activator-starter" (include "osiris.fullname" .) }}
+{{- $altName1 := printf "%s-activator-starter.%s" (include "osiris.fullname" .) .Release.Namespace }}
+{{- $altName2 := printf "%s-activator-starter.%s.svc" (include "osiris.fullname" .) .Release.Namespace }}
+{{- $altName3 := printf "%s-activator-starter.%s.svc.cluster" (include "osiris.fullname" .) .Release.Namespace }}
+{{- $altName4 := printf "%s-activator-starter.%s.svc.cluster.local" (include "osiris.fullname" .) .Release.Namespace }}
+{{- $cert := genSignedCert $cn nil (list $altName1 $altName2 $altName3 $altName4) 3650 $ca }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "osiris.fullname" . }}-activator-starter-cert
+  labels:
+    app.kubernetes.io/name: {{ include "osiris.name" . }}-activator-starter
+    helm.sh/chart: {{ include "osiris.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  tls.crt: {{ b64enc $cert.Cert }}
+  tls.key: {{ b64enc $cert.Key }}
