@@ -40,3 +40,5 @@ rules:
   - watch
   - update
   - patch
+  - create
+  - delete

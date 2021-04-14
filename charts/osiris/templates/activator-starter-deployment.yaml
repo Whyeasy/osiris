@@ -41,6 +41,8 @@ spec:
           value: /osiris/cert/tls.crt
         - name: TLS_KEY_FILE
           value: /osiris/cert/tls.key
+        - name: ACTIVATOR_CONFIG_FILE
+          value: osiris/config
         ports:
         - name: healthz
           containerPort: 5000
@@ -56,6 +58,9 @@ spec:
         volumeMounts:
         - name: cert
           mountPath: /osiris/cert
+          readOnly: true
+        - name: activator-starter-config
+          mountPath: /osiris/config
           readOnly: true
         resources:
 {{ toYaml .Values.activatorStarter.resources | indent 12 }}
@@ -75,3 +80,6 @@ spec:
         - name: cert
           secret:
             secretName: {{ include "osiris.fullname" . }}-activator-starter-cert
+        - configMap:
+            name: {{ include "osiris.name" . }}-activator-starter
+          name: activator-starter-config

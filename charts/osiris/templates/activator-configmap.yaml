@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "osiris.name" . }}-activator-starter
+  labels:
+    helm.sh/chart: {{ include "osiris.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data: 
+  activator.yaml: |
+    image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+
+    {{- with .Values.activator.tolerations }}
+    tolerations:
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.activator.affinity }}
+    nodeAffinity:
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.activator.nodeSelector }}
+    nodeSelector:
+    {{ toYaml . | indent 2 }}
+    {{- end }}
+
+    replicaCount: {{ .Values.activator.replicaCount | default 1}}
