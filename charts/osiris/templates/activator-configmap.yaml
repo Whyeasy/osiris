@@ -26,3 +26,4 @@ data:
     {{- end }}
 
     replicaCount: {{ .Values.activator.replicaCount | default 1}}
+    osirisName: {{ include "osiris.fullname" . }}
