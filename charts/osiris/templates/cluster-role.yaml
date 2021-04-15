@@ -42,3 +42,15 @@ rules:
   - patch
   - create
   - delete
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - serviceaccounts
+  - rolebindings
+  verbs:
+  - list
+  - update
+  - create
+  - delete
+  - get
+  - watch
